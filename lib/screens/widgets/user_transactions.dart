@@ -14,12 +14,12 @@ class UserTransactions extends StatefulWidget {
 class _UserTransactionsState extends State<UserTransactions> {
   final _userTransactions = TransactionRepository.transactions;
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(String txTitle, double txAmount, DateTime txDate) {
     final newTx = Transaction(
       id: Random().nextInt(101).toString(),
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: txDate,
       icon: Icon(Icons.air),
     );
     setState(() {

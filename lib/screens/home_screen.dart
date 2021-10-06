@@ -1,7 +1,7 @@
 import 'package:expenses_app/constant.dart';
-
+import 'package:expenses_app/screens/widgets/balance_value.dart';
+import 'package:expenses_app/screens/widgets/expenses_group.dart';
 import 'package:expenses_app/screens/widgets/user_transactions.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -34,94 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               SizedBox(height: 24),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.amber),
-                width: MediaQuery.of(context).size.width,
-                height: 120,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "My Balance",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          "R\$ 2000,00",
-                          style: TextStyle(fontSize: 36),
-                        )
-                      ],
-                    ),
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white),
-                      child: Icon(Icons.visibility),
-                    )
-                  ],
-                ),
-              ),
+              BalanceWidget(),
               SizedBox(height: 24),
-              Row(
-                children: [
-                  InkWell(
-                    child: Container(
-                      height: 72,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.green),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 45),
-                        child: Row(
-                          children: [
-                            Icon(Icons.north_west, color: Colors.white),
-                            Text(
-                              "Receita",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  InkWell(
-                    child: Container(
-                      height: 72,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.red),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 45),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Despesa",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Icon(Icons.south_east, color: Colors.white),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              ExpensesGroup(),
               SizedBox(height: 24),
               Text(
                 "Últimas transações",
@@ -135,11 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.green,
       ),
     );
   }
