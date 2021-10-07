@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
-
   NewTransaction(this.addTx);
 
   @override
@@ -12,31 +11,27 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final TextEditingController _titleController = TextEditingController();
-
   final TextEditingController _amountController = TextEditingController();
-
   final TextEditingController _dateController = TextEditingController();
-
   DateTime _date;
 
-  String getText() {
-    if (_date == null) {
-      return 'Select Date';
-    } else {
-      return DateFormat('dd/MM/yyyy').format(_date);
+  void submitData() {
+    if (_amountController.text.isEmpty) {
+      return;
     }
-  }
-
-  void submitDate() {
     final enteredTitle = _titleController.text;
     final enteredAmount = double.parse(_amountController.text);
     final enteredDate = DateTime.parse(_dateController.text);
-    //DateTime dt = DateTime.parse('$enteredDate');
-    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || enteredDate == null) {
       return;
-    } else {
-      widget.addTx(enteredTitle, enteredAmount, enteredDate);
     }
+
+    widget.addTx(
+      enteredTitle,
+      enteredAmount,
+      enteredDate,
+    );
+    //Navigator.of(context).pop();
   }
 
   @override
@@ -59,7 +54,7 @@ class _NewTransactionState extends State<NewTransaction> {
                     borderSide: BorderSide(color: Color(0xFF6200EE)),
                   ),
                 ),
-                onSubmitted: (_) => submitDate,
+                onSubmitted: (_) => submitData(),
               ),
               const SizedBox(height: 24),
               TextField(
@@ -76,7 +71,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 ),
                 keyboardType: TextInputType.numberWithOptions(
                     signed: true, decimal: true),
-                onSubmitted: (_) => submitDate,
+                onSubmitted: (_) => submitData(),
               ),
               const SizedBox(height: 24),
               TextField(
@@ -88,19 +83,24 @@ class _NewTransactionState extends State<NewTransaction> {
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFF6200EE)),
                   ),
-                  hintText: getText(),
+                  hintText: _date == null ? 'Select Date' : _date,
                   suffixIcon: Icon(
                     Icons.calendar_today,
                     color: Color(0xFF6200EE),
                   ),
                 ),
                 onTap: () => pickDate(context),
+                onSubmitted: (_) => submitData(),
               ),
+              SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {
-                  submitDate();
-                },
                 child: Text('Adicionar'),
+                onPressed: () => submitData(),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.purple,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    textStyle:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ],
           )),

@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:expenses_app/constant.dart';
+import 'package:expenses_app/models/transaction.dart';
+import 'package:expenses_app/repositories/transactions_repository.dart';
 import 'package:expenses_app/screens/widgets/balance_value.dart';
 import 'package:expenses_app/screens/widgets/expenses_group.dart';
-import 'package:expenses_app/screens/widgets/user_transactions.dart';
+import 'package:expenses_app/screens/widgets/new_transaction.dart';
+import 'package:expenses_app/screens/widgets/transactions_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,6 +16,37 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _userTransactions = TransactionRepository.transactions;
+
+  void _addNewTransaction(String txTitle, double txAmount, DateTime txDate) {
+    final newTx = Transaction(
+      id: Random().nextInt(101).toString(),
+      title: txTitle,
+      amount: txAmount,
+      date: txDate,
+      icon: Icon(Icons.air),
+    );
+    setState(() {
+      _userTransactions.add(newTx);
+    });
+    Navigator.pop(context);
+  }
+
+  void _startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (_) {
+        return NewTransaction(_addNewTransaction);
+      },
+    );
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((tx) => tx.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +82,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(height: 24),
-              UserTransactions(),
+              TransactionList(_userTransactions, _deleteTransaction),
             ],
           ),
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _startAddNewTransaction(context),
       ),
     );
   }
